@@ -297,6 +297,9 @@ function validEmail(inputEmail) {
 //Envoi des informations client au localstorage après validation
 function submitForm(event){
     event.preventDefault();
+
+const btn_commander = document.getElementById("order");
+btn_commander.addEventListener("click", (event) => submitForm(event));
     
     //Récupération des coordonnées du formulaire client
     let inputName = document.getElementById('firstName');
