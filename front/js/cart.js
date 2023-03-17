@@ -192,7 +192,7 @@ function modifQuantity() {
                 localStorage.setItem("panier", JSON.stringify(panier));
                 document.location.reload();
             }else{
-                alert("veuillez entrer une valeur supérieur à 0 ou cliquer sur supprimer afin de retirer l'article du panier");
+                alert("Veuillez entrer une valeur supérieure à 0 ou cliquez sur supprimer afin de retirer l'article du panier");
                 document.location.reload();
             }
         })
@@ -350,7 +350,6 @@ function submitForm(event){
         .then((data) => {
             console.log(data);
             localStorage.clear();
-            /* localStorage.setItem("orderId", data.orderId); */
             console.log(data.orderId);
             document.location.href = `confirmation.html?id=${data.orderId}`;
         })

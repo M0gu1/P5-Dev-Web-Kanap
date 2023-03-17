@@ -65,7 +65,7 @@ function displayArticle(article){
 }
 
 // Gestion du panier
-function addToCart(article) {
+function addToCart() {
     const btn_envoyerPanier = document.getElementById("addToCart");
 
     //Ecouter le panier avec 2 conditions couleur non nulle et quantité entre 1 et 100
