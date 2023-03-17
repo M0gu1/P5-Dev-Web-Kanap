@@ -84,9 +84,6 @@ function addToCart(article) {
                 id: id,
                 color: choixCouleur,
                 quantity: parseInt(choixQuantite),
-                /* name: article.name,
-                imgUrl: article.imageUrl,
-                altImg: article.altTxt */
             };
 
             addPanier(product);
