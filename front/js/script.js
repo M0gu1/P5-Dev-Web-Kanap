@@ -1,22 +1,32 @@
+// Déclaration de la constante API pour appeler l'API son l'URL
 const API = "http://localhost:3000/api/products/";
+// Déclaration de la constante ITEMS qui fait référence à un élément HTML dans la page
+// Avec la méthode getElementById du document, on récupère l'élément ayant l'identifiant items.
 const ITEMS = document.getElementById("items");
 
-// Appel fonction display
+// Appel de la fonction display() pour afficher les données de l'API dans le DOM
 display();
 
 // Récupération produits de l'API
+// Déclaration de la fonction asynchrone getArticles()
 async function getArticles() {
+    // Utilisation de la fonction fetch(), qui renvoie une promesse, pour envoyer une requête HTTP GET à l'URL stockée dans la constante API
+    // Utilisation de await pour attendre la résolution de la promesse
     var response = await fetch(API);
+    // Renvoie d'une autre promesse qui résout les données JSON renvoyées par l'API
     return await response.json();
 }
 
-// Répartition données de l'API dans le DOM
+// Répartition des données de l'API dans le DOM
+// Déclaration de la fonction asynchrone display() 
 async function display() {
+    // Appel à la fonction getArticles() définie précédemment
     await getArticles ()
+    // Une fois que la promesse retrounée par getArticles est résolue, on utilise la méthode then() pour traiter la réponse renvoyée par la fonction getArticles(). Cette méthode prend en argument une fonction de rappel (appelée "callback") qui sera exécutée lorsque la promesse sera résolue avec succès.
     .then((response) => {
         let data = response;
 
-        // boucle for of pour traiter chaque élément du tableau data
+        // Boucle for of pour traiter chaque élément du tableau data
         for (let article of data) {
 
             // Création balise "a"
