@@ -1,45 +1,51 @@
+// Déclaration de la constante API pour appeler l'API via l'URL
 const API = "http://localhost:3000/api/products/";
 
 // Configuration des regexp permettant de contrôler la saisie des utilisateurs dans le formulaire
-let emailRegExp = new RegExp('^[A-Za-z0-9.-_]+[@]{1}[A-Za-z0-9.-_]+[.]{1}[a-z]{2,}$');
-let caractRegExp = new RegExp("^[A-Za-zàâäéèêëïîôöùûüç'-]+$");
-let cityRegExp = new RegExp("^[A-Za-zàâäéèêëïîôöùûüç '-]+$");
-let addressRegExp = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-A-Za-zàâäéèêëïîôöùûüç]+)+");
+let emailRegExp = new RegExp("^[A-Za-z0-9.-_]+[@]{1}[A-Za-z0-9.-_]+[.]{1}[a-z]{2,}$"); // On vérifie si l'email est valide : si la chaîne commence par une séquence de lettres, de chiffres, de points, de tirets ou de traits de soulignement, suivie d'un symbole '@', puis d'une autre séquence de lettres, de chiffres, de points ou de traits de soulignement, suivie d'un point suivi d'au moins deux lettres
+let caractRegExp = new RegExp("^[A-Za-zàâäéèêëïîôöùûüç'-]+$"); // On vérifie si les caractères ne contiennent que des lettres (majuscules ou minuscules), des accents français (à, â, ä, é, è, ê, ë, ï, î, ô, ö, ù, û, ü, ç), des apostrophes ou des tirets
+let cityRegExp = new RegExp("^[A-Za-zàâäéèêëïîôöùûüç '-]+$"); // On vérifie si le nom de la ville est valide : si les caractères ne contiennent que des lettres (majuscules ou minuscules), des accents français (à, â, ä, é, è, ê, ë, ï, î, ô, ö, ù, û, ü, ç), des apostrophes ou des tirets
+let addressRegExp = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-A-Za-zàâäéèêëïîôöùûüç]+)+"); // On vérifie si l'adresse est valide la chaine commence par un nombre de 1 à 3 chiffres, puis est suivi d'un espace, d'un point ou d'une virgule puis la validité des caractères comme précédemment
 
-// bouton commander et lancement de la fonction de contrôle du formulaire
-const btn_commander = document.getElementById("order");
+// On exécute la fonction lorsque l'utilisateur clique sur l'élément représenté par la variable btn_commander
+const btn_commander = document.getElementById("order"); 
+// Ecoute du clic de l'utilisateur qui, s'il est satisfait, appel à la fonction submitForm pour soumettre le formulaire
 btn_commander.addEventListener("click", (event) => submitForm(event));
 
-// Appel API
+// Déclaration de la fonction getApi en asynchrone
 async function getApi(){
-    let response = await fetch(API)
-    return await response.json();
+    let response = await fetch(API) // Le résultat de fetch est stocké danas la variable response déclarée ici
+    return await response.json(); // Comme response est un objet de type Response, on utilise la méthode response.json() pour extraire les données de la réponse
 }
 
-// lecture du local storage
-let panier = getPanier();
+// Appel à la fonction getPanier() qui renvoie un objet stocké dans la variable panier
+let panier = getPanier(); 
 
+// Déclaration de la fonction getPanier
 function getPanier() {
-    let panier = localStorage.getItem("panier");
-    if (panier == null) {
-        return [];
+    let panier = localStorage.getItem("panier"); // On regarde ce qu'il y a dans le panier du stockage local du navigateur
+    if (panier == null) { 
+        return []; // S'il n'y a rien dans le panier, on renvoie un tableau nul
     } else {
-        return JSON.parse(panier);
+        return JSON.parse(panier); // Si le panier est rempli, on renvoie l'objet JavaScript représentant le contenu du panier
     }
 }
-getApi().then((data) =>{
-    const positionEmptyCart = document.querySelector("#cart__items");
+// Appel à la fonction getApi qui recupère les infos de l'API
+getApi().then((data) =>{ // Une fois que les données ont été récupérées, on utilise then() pour sélectionner la data voulue
+    const positionEmptyCart = document.querySelector("#cart__items"); // On affiche les éléments présents dans le panier de l'utilisateur
         
         // Si le panier est vide
         if (panier === null || panier == 0) {
-            positionEmptyCart.innerHTML = `<p>Votre panier est vide</p>`;
+            positionEmptyCart.innerHTML = `<p>Votre panier est vide</p>`; // On affiche un message d'alerte
         } else {
-            let totalPrice = 0;
+            let totalPrice = 0; // Sinon, on initialise le totalPrice à zéro qu'on viendra incrémenter par la suite
 
             // Récupération des infos des produits dans le panier via l'API
+            // On fait boucle sur chaque produit du panier, puis pour chaque produit, on appelle la fonction getArticle()
             for (let produit of panier){
 
                 // Appel des infos de l'API pour chaque article
+                // On initialise une chaine vide pour pouvoir y stocker des informations par la suite
                 let article = "";
 
                 // Récupération des données de l'article via l'API
@@ -54,12 +60,13 @@ getApi().then((data) =>{
                         article = await resApi;
                         displayArticle(article);    
                     })
+                    // Méthode catch avec affichage de l'erreur dans la console du navigateur si la promesse n'est pas résolue
                     .catch((error) => {
                         console.log("Erreur " + error);
                     })
                 }
                 
-                // Appel de la fonction
+                // Appel de la fonction getArticle avec les arguments API et produit.id
                 getArticle(API, produit.id);
 
                 // Insertion de l'élément "article"

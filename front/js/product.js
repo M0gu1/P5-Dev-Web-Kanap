@@ -1,4 +1,4 @@
-// Déclaration de la constante API pour appeler l'API via son l'URL
+// Déclaration de la constante API pour appeler l'API via l'URL
 const API = "http://localhost:3000/api/products/";
 
 // Déclaration de la variable let URL pour récupérer l'URL de la page courante

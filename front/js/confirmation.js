@@ -1,7 +1,6 @@
-// la fonction main récupère l'id de commande passée en paramètre
-// et l'injecte dans la page
+// Déclaration de la fonction main qui récupère l'id de la commande passée en paramètre et l'injecte dans la page 
 function main(){
-    // Récupération URL page courante
+    // Récupération de l'URL de la page courante
     let url = new URL(document.location.href);
 
 // Récupération ID présent dans URL page courante

@@ -1,4 +1,4 @@
-// Déclaration de la constante API pour appeler l'API via son l'URL
+// Déclaration de la constante API pour appeler l'API via l'URL
 const API = "http://localhost:3000/api/products/";
 // Déclaration de la constante ITEMS qui fait référence à un élément HTML dans la page
 // Avec la méthode getElementById du document, on récupère l'élément ayant l'identifiant items.
