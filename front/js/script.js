@@ -22,8 +22,9 @@ async function getArticles() {
 async function display() {
     // Appel à la fonction getArticles() définie précédemment
     await getArticles ()
-    // Une fois que la promesse retrounée par getArticles est résolue, on utilise la méthode then() pour traiter la réponse renvoyée par la fonction getArticles(). Cette méthode prend en argument une fonction de rappel (appelée "callback") qui sera exécutée lorsque la promesse sera résolue avec succès.
+    // Une fois que la promesse retournée par getArticles est résolue, on utilise la méthode then() pour traiter la réponse renvoyée par la fonction getArticles(). Cette méthode prend en argument une fonction de rappel (appelée "callback") qui sera exécutée lorsque la promesse sera résolue avec succès.
     .then((response) => {
+        // Création de la variable data ayant pour valeur response, variable contenant les données récupérées via l'API
         let data = response;
 
         // Boucle for of pour traiter chaque élément du tableau data
@@ -57,6 +58,7 @@ async function display() {
             productDescription.innerHTML = article.description; // ajoute de façon dynamique la valeur de de la description de l'article
         }
     })
+    // Si une erreur survient lors de la résolution de la promesse
     .catch ((error) => {
         console.log("Erreur " + error);
     });
