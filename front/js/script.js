@@ -1,4 +1,4 @@
-// Déclaration de la constante API pour appeler l'API son l'URL
+// Déclaration de la constante API pour appeler l'API via son l'URL
 const API = "http://localhost:3000/api/products/";
 // Déclaration de la constante ITEMS qui fait référence à un élément HTML dans la page
 // Avec la méthode getElementById du document, on récupère l'élément ayant l'identifiant items.
@@ -58,8 +58,9 @@ async function display() {
             productDescription.innerHTML = article.description; // ajoute de façon dynamique la valeur de de la description de l'article
         }
     })
-    // Si une erreur survient lors de la résolution de la promesse
+    // Utilisation de la méthode catch si la promesse est rejetée. "Error" contient les détails de l'erreur retournée par la promesse
     .catch ((error) => {
+        // Affichage de l'erreur relevée dans la console du navigateur via le console.log
         console.log("Erreur " + error);
     });
 }
