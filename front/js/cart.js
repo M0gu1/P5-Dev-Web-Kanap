@@ -36,7 +36,7 @@ getApi().then((data) =>{ // Une fois que les données ont été récupérées, o
         
         // Si le panier est vide
         if (panier === null || panier == 0) {
-            positionEmptyCart.textContent = `<p>Votre panier est vide</p>`; // On affiche un message d'alerte
+            positionEmptyCart.textContent = `Votre panier est vide.`; // On affiche un message d'alerte
         } else {
             let totalPrice = 0; // Sinon, on initialise le totalPrice à zéro qu'on viendra incrémenter par la suite
 
