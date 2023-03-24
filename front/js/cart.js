@@ -36,7 +36,7 @@ getApi().then((data) =>{ // Une fois que les données ont été récupérées, o
         
         // Si le panier est vide
         if (panier === null || panier == 0) {
-            positionEmptyCart.innerHTML = `<p>Votre panier est vide</p>`; // On affiche un message d'alerte
+            positionEmptyCart.textContent = `<p>Votre panier est vide</p>`; // On affiche un message d'alerte
         } else {
             let totalPrice = 0; // Sinon, on initialise le totalPrice à zéro qu'on viendra incrémenter par la suite
 
@@ -66,16 +66,16 @@ getApi().then((data) =>{ // Une fois que les données ont été récupérées, o
                     })
                 }
                 
-                // Appel de la fonction getArticle avec les arguments API et produit.id
+                // Appel de la fonction getArticle avec l'URL de l'API et l'id de chaque produit
                 getArticle(API, produit.id);
 
                 // Insertion de l'élément "article"
-                function displayArticle(article) {
-                let productArticle = document.createElement("article");
-                positionEmptyCart.appendChild(productArticle);
-                productArticle.className = "cart__item";
-                productArticle.setAttribute('data-id', produit.id);
-                productArticle.setAttribute('data-color', produit.color);
+                function displayArticle(article) { // Une fois que les données ont été récupérées, on les affiches
+                let productArticle = document.createElement("article"); // On créé l'élément article avec la méthode document.createElement 
+                positionEmptyCart.appendChild(productArticle); // Ajout de l'article à l'élément html cart__items
+                productArticle.className = "cart__item"; // Ajout de la classe cart__item
+                productArticle.setAttribute('data-id', produit.id); // On stocke l'id du produit
+                productArticle.setAttribute('data-color', produit.color); // On stocke la couleur du produit
     
                 // Insertion de l'élément "div"
                 let productDivImg = document.createElement("div");
@@ -102,7 +102,6 @@ getApi().then((data) =>{ // Une fois que les données ont été récupérées, o
                 let productTitle = document.createElement("h2");
                 productItemContentTitlePrice.appendChild(productTitle);
                 productTitle.innerText = article.name;
-                console.log(article.name);
     
                 // Insertion de la couleur
                 let productColor = document.createElement("p");
@@ -115,9 +114,9 @@ getApi().then((data) =>{ // Une fois que les données ont été récupérées, o
     
                 // boucle permettant d'associer le prix au bon article
                 for (const dataArticle of data) {
-                    if(produit.id === dataArticle._id){
-                        productPrice.innerText = dataArticle.price + " €";
-                        totalPrice += (dataArticle.price * produit.quantity)
+                    if(produit.id === dataArticle._id){ // On vérifie si l'ID de l'article dans le panier (stocké dans la variable produit.id) correspond à l'ID de l'article récupéré via l'API (stocké dans la propriété _id de dataArticle)
+                        productPrice.innerText = dataArticle.price + " €"; // Si c'est le cas, on affiche le prix du produit
+                        totalPrice += (dataArticle.price * produit.quantity) // On calcule le prix total du produit en le multipliant à la quantité d'articles
                     }
                 }
 
@@ -155,26 +154,26 @@ getApi().then((data) =>{ // Une fois que les données ont été récupérées, o
                 let productSupprimer = document.createElement("p");
                 productItemContentSettingsDelete.appendChild(productSupprimer);
                 productSupprimer.className = "deleteItem";
-                productSupprimer.innerHTML = "Supprimer";
+                productSupprimer.textContent = "Supprimer";
             
-            totalQuantity();
-            modifQuantity();
-            deleteArticle();
-            displayTotalPrice(totalPrice);
+            totalQuantity(); // Appel à la fonction totalQuantity qui affiche la quantité totale du produit
+            modifQuantity(); // Appel à la fonction modifQuantity qui affiche la quantité modifiée
+            deleteArticle(); // Appel à la fonction deleteArticle qui permet du supprimer un article
+            displayTotalPrice(totalPrice); // Appel à la fonction displayTotalPrice avec l'argument totalPrice qui permet d'afficher le prix totale de la commande
                 }
             }   
         }
     })
 
-// fonction de calcul de la quantité totale 
-function totalQuantity(){
-    let quantity = document.querySelectorAll('.itemQuantity');
-    let totalQuantity = document.getElementById('totalQuantity');
-    totalQuant = 0;
-    for (let i = 0; i < quantity.length; ++i) {
-        totalQuant += quantity[i].valueAsNumber;
+// Déclaration de la fonction de calcul de la quantité totale 
+function totalQuantity(){ 
+    let quantity = document.querySelectorAll('.itemQuantity'); // On récupère la quantité de l'article
+    let totalQuantity = document.getElementById('totalQuantity'); // On récupère le nombre total d'article
+    totalQuant = 0; // On initialise à zéro pour stocker la somme de toutes les quantités d'article
+    for (let i = 0; i < quantity.length; ++i) { 
+        totalQuant += quantity[i].valueAsNumber; // On ajoute à chaque élément sa valeur numérique
     }
-    totalQuantity.innerText = totalQuant;
+    totalQuantity.innerText = totalQuant; // On met à jour le nombre total d'article à afficher sur la page
 }
 
 // fonction display affichant le prix total
@@ -186,19 +185,20 @@ function displayTotalPrice(totalPrices){
 // Modification de la quantité d'un produit
 function modifQuantity() {
     let quantity = document.querySelectorAll(".itemQuantity");
-    quantity.forEach((target) => {
+    quantity.forEach((target) => { // On va voir la quantité de chaque produit
         let article = target.closest("article");
         let id = article.dataset.id;
         let color = article.dataset.color;
-        target.addEventListener("change" , () => {
-            let index = panier.findIndex((element) => element.id == id && element.color == color );
-            let quantityCart = panier.quantity;
+        target.addEventListener("change" , () => { // On écoute s'il y a un changement effectué sur l'élément
+            let index = panier.findIndex((element) => element.id == id && element.color == color ); // Recherche de l'index de l'article correspondant dans le tableau panier à l'aide de la méthode findIndex()
+            let quantityCart = panier.quantity; // Mise à jour du panier avec la nouvelle quantité saisie
             let modifQuantity = target.valueAsNumber;
-            if (quantityCart != modifQuantity && modifQuantity > 0 && modifQuantity < 100){
+            if (quantityCart != modifQuantity && modifQuantity > 0 && modifQuantity < 100){ // Si la nouvelle quantité saisie par l'utilisateur est supérieure à 0 et inférieure à 100, la fonction met à jour le tableau panier et sauvegarde les modifications dans le stockage local via localStorage.setItem()
                 panier[index].quantity = modifQuantity
                 localStorage.setItem("panier", JSON.stringify(panier));
-                document.location.reload();
+                document.location.reload(); // On recharge la page
             }else{
+                // Message d'alerte si la nouvelle quantité est inférieure à 1 ou supérieure à 100
                 alert("Veuillez entrer une valeur supérieure à 0 ou cliquez sur supprimer afin de retirer l'article du panier");
                 document.location.reload();
             }
@@ -215,7 +215,7 @@ function deleteArticle() {
         let color = article.dataset.color;
         target.addEventListener("click" , () => {
 
-            //Selection de l'element à supprimer en fonction de son id ET sa couleur
+            //Selection de l'element à supprimer en fonction de son id et sa couleur
             panier = panier.filter((element) => element.id !== id || element.color !== color );
 
             // mise à jour du localstorage
@@ -235,15 +235,15 @@ function validFirstName(inputFirstName) {
     let firstNameErrorMsg = document.querySelector("#firstNameErrorMsg");
 
     // déclaration de la condition
-    // on va vérifier les RegExp vis à vis de cette valeur. Si la valeur respecte les REGexp, on n'affiche pas d'erreur
+    // On va vérifier les RegExp vis à vis de cette valeur. Si la valeur respecte les REGexp, on n'affiche pas d'erreur
     if (caractRegExp.test(inputFirstName.value)) {
-        firstNameErrorMsg.innerHTML = '';
+        firstNameErrorMsg.textContent = '';
         // et on retourne true
         return true
-    // sinon, on affiche le message d'erreur
+    // Sinon, on affiche le message d'erreur
     } else {
-        firstNameErrorMsg.innerHTML = 'Veuillez utiliser un tiret pour remplacer un espace. Par ex: Mon-prénom.';
-        // et on retourne false
+        firstNameErrorMsg.textContent = 'Veuillez utiliser un tiret pour remplacer un espace. Par ex: Mon-prénom.';
+        // Et on retourne false
         return false
     }
 };
@@ -253,10 +253,10 @@ function validLastName(inputLastName) {
     let lastNameErrorMsg = document.querySelector("#lastNameErrorMsg");
 
     if (caractRegExp.test(inputLastName.value)) {
-        lastNameErrorMsg.innerHTML = '';
+        lastNameErrorMsg.textContent = '';
         return true
     } else {
-        lastNameErrorMsg.innerHTML = 'Veuillez utiliser un tiret pour remplacer un espace. Par ex: Mon-nom.';
+        lastNameErrorMsg.textContent = 'Veuillez utiliser un tiret pour remplacer un espace. Par ex: Mon-nom.';
         return false
     }
 };
@@ -266,10 +266,10 @@ function validAddress(inputAddress) {
     let addressErrorMsg = document.querySelector("#addressErrorMsg");
 
     if (addressRegExp.test(inputAddress.value)) {
-        addressErrorMsg.innerHTML = '';
+        addressErrorMsg.textContent = '';
         return true
     } else {
-        addressErrorMsg.innerHTML = 'Veuillez saisir une adresse avec un numéro. Par ex: 10 quai de la charente.';
+        addressErrorMsg.textContent = 'Veuillez saisir une adresse avec un numéro. Par ex: 10 quai de la charente.';
         return false
     }
 };
@@ -279,10 +279,10 @@ function validCity(inputCity) {
     let cityErrorMsg = document.querySelector("#cityErrorMsg");
 
     if (cityRegExp.test(inputCity.value)) {
-        cityErrorMsg.innerHTML = '';
+        cityErrorMsg.textContent = '';
         return true
     } else {
-        cityErrorMsg.innerHTML = "Veuillez saisir le nom d'une ville sans chiffres ni caractères spéciaux. Par ex : Paris.";
+        cityErrorMsg.textContent = "Veuillez saisir le nom d'une ville sans chiffres ni caractères spéciaux. Par ex : Paris.";
         return false
 
     }
@@ -293,10 +293,10 @@ function validEmail(inputEmail) {
     let emailErrorMsg = document.querySelector("#emailErrorMsg");
 
     if (emailRegExp.test(inputEmail.value)) {
-        emailErrorMsg.innerHTML = '';
+        emailErrorMsg.textContent = '';
         return true
     } else {
-        emailErrorMsg.innerHTML = "Veuillez saisir une adresse mail valide. Par exemple : support@name.com.";
+        emailErrorMsg.textContent = "Veuillez saisir une adresse mail valide. Par exemple : support@name.com.";
         return false
     }
 };
@@ -330,7 +330,7 @@ function submitForm(event){
             idPanier.push(panier[i].id);
         }
             
-        // création de l'objet que doit recevoir le back
+        // Création de l'objet que doit recevoir le back
         const order = {
             contact : {
                 firstName: inputName.value,
@@ -342,19 +342,19 @@ function submitForm(event){
             products: idPanier,
         } 
     
-        // Option de configuration de la requete post
+        // Option de configuration de la requete post qui doit avoir des paramètres
         const options = {
             method: 'POST',
-            body: JSON.stringify(order),
-            headers: {
+            body: JSON.stringify(order), // Ce que va recevoir le corps du message avec le stringify des objets
+            headers: { // En-tête : petits messages transmis au travers de la requête qui donne des infos au navigateur pour qu'il comprenne ce qui est en train d'être affiché
                 'Accept': 'application/json', 
                 "Content-Type": "application/json" 
             },
         };
             
-        fetch("http://localhost:3000/api/products/order", options)
+        fetch("http://localhost:3000/api/products/order", options) // Renvoie des données à l'API
         .then((response) => response.json())
-        .then((data) => {
+        .then((data) => { // Rédirection en passant par l'order ID pour l'afficher sur la page confirmation
             console.log(data);
             localStorage.clear();
             console.log(data.orderId);

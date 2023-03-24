@@ -49,13 +49,13 @@ async function display() {
             let productName = document.createElement("h3"); // création d'un élément "h3" assigné a une variable
             productArticle.appendChild(productName); // ajoute l'élément créé en tant que premier enfant
             productName.classList.add("productName"); // ajoute un selecteur de type class a l'élément créé
-            productName.innerHTML = article.name; // ajoute de façon dynamique la valeur du nom de l'article
+            productName.textContent = article.name; // ajoute de façon dynamique la valeur du nom de l'article
 
             // Création balise "p"
             let productDescription = document.createElement("p"); // création d'un élément "p" assigné a une variable
             productArticle.appendChild(productDescription); // ajoute l'élément créé en tant que premier enfant
             productDescription.classList.add("productDescription"); // ajoute un selecteur de type class a l'élément créé
-            productDescription.innerHTML = article.description; // ajoute de façon dynamique la valeur de de la description de l'article
+            productDescription.textContent = article.description; // ajoute de façon dynamique la valeur de de la description de l'article
         }
     })
     // Utilisation de la méthode catch si la promesse est rejetée. "Error" contient les détails de l'erreur retournée par la promesse

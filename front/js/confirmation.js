@@ -5,11 +5,11 @@ function main(){
 
 // Récupération ID présent dans URL page courante
 // création fonction dans URL page web
-// récupération de l'élélement id dans l'URL avec get
+// Récupération de l'éléement id dans l'URL avec get
     let id = url.searchParams.get("id");
     // récupération élément du span orderId dans la page HTML
     const orderId = document.getElementById("orderId");
-    // ajout du text correspondant à l'id au span du HTML
+    // Ajout du text correspondant à l'id au span du HTML
     orderId.innerText = id;
     localStorage.clear();
 }
